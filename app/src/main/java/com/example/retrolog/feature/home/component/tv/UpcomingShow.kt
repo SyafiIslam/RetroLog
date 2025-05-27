@@ -7,12 +7,17 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -20,13 +25,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.retrolog.R
-import com.example.retrolog.feature.home.component.FilmCard
+import com.example.retrolog.feature.component.EmptyStateCard
+import com.example.retrolog.feature.component.FilmCard
+import com.example.retrolog.feature.home.HomeViewModel
 import com.example.retrolog.ui.theme.Neutral50
 import com.example.retrolog.util.Constant
 import com.example.retrolog.util.Route
 
 @Composable
-fun OnTheAir(navController: NavController) {
+fun OnTheAir(navController: NavController, viewModel: HomeViewModel) {
+
+    val isLoading by viewModel.isLoading
+    val onTheAirShowsList by viewModel.onTheAirShowsList
+
     Column(
         Modifier.fillMaxWidth()
     ) {
@@ -36,7 +47,7 @@ fun OnTheAir(navController: NavController) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                stringResource(R.string.txt_on_the_air),
+                stringResource(R.string.txt_upcoming),
                 color = Neutral50,
                 fontWeight = FontWeight.Bold
             )
@@ -45,7 +56,7 @@ fun OnTheAir(navController: NavController) {
                 modifier = Modifier.clickable {
                     navController.navigate(
                         Route.SeeAllScreen(
-                            type = Constant.TV_SHOWS,
+                            type = Constant.TV,
                             category = Constant.ON_THE_AIR
                         )
                     )
@@ -68,8 +79,29 @@ fun OnTheAir(navController: NavController) {
         LazyRow(
             Modifier.fillMaxWidth(),
         ) {
-            items(5) {
-                FilmCard()
+            if (onTheAirShowsList.isEmpty() || isLoading) {
+                items(2) {
+                    EmptyStateCard(
+                        Modifier
+                            .width(150.dp)
+                            .height(250.dp)
+                            .padding(end = 16.dp)
+                    )
+                }
+            } else {
+                items(onTheAirShowsList) {
+                    FilmCard(
+                        Modifier
+                            .width(150.dp)
+                            .height(250.dp)
+                            .wrapContentSize(Alignment.Center)
+                            .padding(end = 16.dp),
+                        onClick = {
+                            navController.navigate(Route.FilmDetailScreen(Constant.TV, it.id))
+                        },
+                        imagePath = it.poster_path
+                    )
+                }
             }
         }
     }

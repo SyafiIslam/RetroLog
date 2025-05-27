@@ -1,4 +1,4 @@
-package com.example.retrolog.feature.collection
+package com.example.retrolog.feature.collection.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -32,7 +32,8 @@ fun CollectionItemCard(
     title: String,
     posterPath: String,
     releaseData: String,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    onIconClick: () -> Unit
 ) {
 
     Card(
@@ -74,7 +75,7 @@ fun CollectionItemCard(
             }
 
             IconButton(
-                onClick = {},
+                onClick = { onIconClick() },
                 modifier = Modifier.size(32.dp)
             ) {
                 Icon(

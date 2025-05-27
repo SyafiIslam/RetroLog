@@ -1,4 +1,4 @@
-package com.example.retrolog.feature.see_all.component
+package com.example.retrolog.feature.collection.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -16,16 +16,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.retrolog.R
 import com.example.retrolog.ui.theme.Neutral50
 import com.example.retrolog.ui.theme.Primary700
 import com.example.retrolog.util.Constant
 
 @Composable
-fun TopBar(navController: NavController, type: String, category: String) {
+fun CollectionTopBar(navController: NavController, type: String) {
     Row(
         Modifier
             .fillMaxWidth()
@@ -51,22 +53,10 @@ fun TopBar(navController: NavController, type: String, category: String) {
         }
 
         Text(
-            text = if (type == Constant.MOVIE) {
-                when (category) {
-                    Constant.NOW_PLAYING -> "Movies now playing"
-                    Constant.POPULAR -> "Popular movies"
-                    Constant.UPCOMING -> "Upcoming Movies"
-                    Constant.TOP_RATED -> "Top rated movies"
-                    else -> ""
-                }
+            text = if (type == Constant.FAVORITE) {
+                stringResource(R.string.txt_favorite)
             } else {
-                when (category) {
-                    Constant.NOW_AIRING -> "On Air Tv Shows"
-                    Constant.POPULAR -> "Popular Tv Shows"
-                    Constant.UPCOMING -> "Upcoming Tv Shows"
-                    Constant.TOP_RATED -> "Top rated Th Shows"
-                    else -> ""
-                }
+                stringResource(R.string.txt_watchlist)
             },
             color = Neutral50,
             fontWeight = FontWeight.Bold,

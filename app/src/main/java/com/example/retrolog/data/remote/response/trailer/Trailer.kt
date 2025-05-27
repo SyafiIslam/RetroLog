@@ -1,6 +1,6 @@
 package com.example.retrolog.data.remote.response.trailer
 
-data class Result(
+data class Trailer(
     val id: String,
     val iso_3166_1: String,
     val iso_639_1: String,

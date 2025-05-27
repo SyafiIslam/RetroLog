@@ -1,6 +1,6 @@
 package com.example.retrolog.data.remote.response.review
 
-data class Result(
+data class Review(
     val author: String,
     val author_details: AuthorDetails,
     val content: String,

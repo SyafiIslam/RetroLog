@@ -1,4 +1,4 @@
-package com.example.retrolog.feature.see_all.component
+package com.example.retrolog.feature.search.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -11,21 +11,25 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.retrolog.feature.search.SearchViewModel
 import com.example.retrolog.ui.theme.Neutral50
 import com.example.retrolog.ui.theme.Primary700
-import com.example.retrolog.util.Constant
 
 @Composable
-fun SeeAllTopBar(navController: NavController, type: String, category: String) {
+fun SearchScreenTopBar(
+    navController: NavController,
+    text: String,
+    onValueChange: (String) -> Unit,
+    placeHolder: String? = null,
+    leadingIcon: ImageVector? = null,
+) {
     Row(
         Modifier
             .fillMaxWidth()
@@ -50,27 +54,6 @@ fun SeeAllTopBar(navController: NavController, type: String, category: String) {
             )
         }
 
-        Text(
-            text = if (type == Constant.MOVIE) {
-                when (category) {
-                    Constant.NOW_PLAYING -> "Movies now playing"
-                    Constant.POPULAR -> "Popular movies"
-                    Constant.UPCOMING -> "Upcoming Movies"
-                    Constant.TOP_RATED -> "Top rated movies"
-                    else -> ""
-                }
-            } else {
-                when (category) {
-                    Constant.NOW_AIRING -> "On Air Tv Shows"
-                    Constant.POPULAR -> "Popular Tv Shows"
-                    Constant.UPCOMING -> "Upcoming Tv Shows"
-                    Constant.TOP_RATED -> "Top rated Th Shows"
-                    else -> ""
-                }
-            },
-            color = Neutral50,
-            fontWeight = FontWeight.Bold,
-            fontSize = 18.sp
-        )
+        CustomTextField(text, onValueChange, placeHolder, leadingIcon)
     }
 }

@@ -1,6 +1,6 @@
-package com.example.retrolog.data.remote.response.favorite
+package com.example.retrolog.data.remote.response.collection
 
-data class AddToFavoriteResponse(
+data class CollectionResponse(
     val status_code: Int,
     val status_message: String,
     val success: Boolean

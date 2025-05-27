@@ -1,7 +1,7 @@
 package com.example.retrolog.data.remote.request.watchlist
 
-data class AddToFavoriteRequest (
+data class AddToWatchlistRequest (
     val media_type: String,
     val media_id: Int,
-    val watchLisy: Boolean= true,
+    val watchlist: Boolean= true,
 )

@@ -1,4 +1,4 @@
-package com.example.retrolog.data.remote.response.list.date_based
+package com.example.retrolog.data.remote.response.list
 
 data class FilmData(
     val adult: Boolean,
@@ -14,5 +14,7 @@ data class FilmData(
     val title: String,
     val video: Boolean,
     val vote_average: Double,
-    val vote_count: Int
+    val vote_count: Int,
+    val original_name: String= "",
+    val first_air_date: String= "",
 )

@@ -1,16 +1,15 @@
-package com.example.retrolog.domain.usecase.movie
+package com.example.retrolog.domain.usecase.tv
 
 import com.example.retrolog.data.remote.request.rating.RatingRequest
 import com.example.retrolog.data.remote.response.rating.RatingResponse
-import com.example.retrolog.data.remote.response.review.FilmReviewResponse
-import com.example.retrolog.data.repository.MovieRepository
+import com.example.retrolog.data.repository.TvRepository
 import com.example.retrolog.util.Resource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
-class AddMovieRatingUseCase @Inject constructor(
-    private val repository: MovieRepository
+class AddShowRatingUseCase @Inject constructor(
+    private val repository: TvRepository
 ) {
 
     operator fun invoke(id: Int, ratingRequest: RatingRequest): Flow<Resource<RatingResponse>> =
@@ -19,7 +18,7 @@ class AddMovieRatingUseCase @Inject constructor(
 
             val result =
                 try {
-                    val response = repository.addMovieRating(id, ratingRequest)
+                    val response = repository.addShowRating(id, ratingRequest)
                     Resource.Success(response)
                 } catch (e: Exception) {
                     Resource.Error(e.message.toString())

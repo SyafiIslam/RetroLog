@@ -1,4 +1,4 @@
-package com.example.retrolog.data.remote.response.list.date_based
+package com.example.retrolog.data.remote.response.list
 
 data class Dates(
     val maximum: String?= null,

@@ -1,4 +1,4 @@
-package com.example.retrolog.data.remote.api
+package com.example.retrolog.data.remote.api.service
 
 import com.example.retrolog.data.remote.request.favorite.AddToFavoriteRequest
 import com.example.retrolog.data.remote.request.favorite.DeleteFromFavoriteRequest
@@ -9,44 +9,43 @@ import com.example.retrolog.data.remote.response.list.FilmListResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Path
 
 interface AccountService {
 
-    @POST("{accountId}/favorite")
-    fun addToFavorite(
-        @Path("accountId") accountId: Int,
+    @POST("17134705/favorite")
+    suspend fun addToFavorite(
+        @Header("Content-Type") contentType: String = "application/json",
         @Body addToFavoriteRequest: AddToFavoriteRequest
     ): Response<CollectionResponse>
 
-    @POST("{accountId}/favorite")
-    fun deleteFromFavorite(
-        @Path("accountId") accountId: Int,
+    @POST("17134705/favorite")
+    suspend fun deleteFromFavorite(
+        @Header("Content-Type") contentType: String = "application/json",
         @Body deleteFromFavoriteRequest: DeleteFromFavoriteRequest
     ): Response<CollectionResponse>
 
-    @POST("{accountId}/watchlist")
+    @POST("17134705/watchlist")
     suspend fun addToWatchlist(
-        @Path("accountId") accountId: Int,
+        @Header("Content-Type") contentType: String = "application/json",
         @Body addToWatchlistRequest: AddToWatchlistRequest
     ): Response<CollectionResponse>
 
-    @POST("{accountId}/watchlist")
+    @POST("17134705/watchlist")
     suspend fun deleteFromWatchlist(
-        @Path("accountId") accountId: Int,
+        @Header("Content-Type") contentType: String = "application/json",
         @Body deleteFromWatchlistRequest: DeleteFromWatchlistRequest
     ): Response<CollectionResponse>
 
-    @GET("{accountId}/favorite/{type}")
+    @GET("17134705/favorite/{type}")
     suspend fun getFavorite(
-        @Path("accountId") accountId: Int,
-        @Path("type") type: Int,
+        @Path("type") type: String,
     ): Response<FilmListResponse>
 
-    @GET("{accountId}/watchlist/{type}")
+    @GET("17134705/watchlist/{type}")
     suspend fun getWatchlist(
-        @Path("accountId") accountId: Int,
-        @Path("type") type: Int,
+        @Path("type") type: String,
     ): Response<FilmListResponse>
 }

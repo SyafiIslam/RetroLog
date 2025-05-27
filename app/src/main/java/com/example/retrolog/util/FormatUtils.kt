@@ -11,33 +11,13 @@ fun formatDuration(minute: Int): String {
     }
 }
 
-fun changeRatingFormatValue(rating: Double): String {
+fun changeRatingFormatValue(rating: Double): Double {
     if (rating == 0.0) {
-        return ""
+        return rating
     } else {
-        val originalRating = rating
-        val normalizedRating = originalRating / 2
-        val formattedRating = String.format("%.1f", normalizedRating)
+        val normalizedRating = rating / 2
+        val formattedRating = String.format("%.1f", normalizedRating).toDouble()
 
         return formattedRating
-    }
-}
-
-fun getStartAmount(rating: Double) {
-    fun getStarRating(rating: Double): String {
-        val fullStars = rating.toInt()
-        val hasHalfStar = (rating - fullStars) >= 0.5
-
-        val stars = StringBuilder()
-
-        repeat(fullStars) {
-            stars.append("★")
-        }
-
-        if (hasHalfStar) {
-            stars.append("½") // You can use a different symbol or emoji for half-star
-        }
-
-        return stars.toString()
     }
 }

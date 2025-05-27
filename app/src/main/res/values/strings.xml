@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">RetroLog</string>
+    <string name="txt_now_playing">Now playing</string>
+    <string name="txt_see_all">See all</string>
+    <string name="txt_upcoming">Upcoming</string>
+    <string name="txt_popular">Popular</string>
+    <string name="txt_top_rated">Top Rated</string>
+    <string name="txt_place_holder_search_here">Search here</string>
+    <string name="txt_movies">Movies</string>
+    <string name="txt_tv_shows">Tv Shows</string>
+    <string name="txt_airing_today">Airing today</string>
+    <string name="txt_favorite">Favorite</string>
+    <string name="txt_watchlist">WatchList</string>
 </resources>

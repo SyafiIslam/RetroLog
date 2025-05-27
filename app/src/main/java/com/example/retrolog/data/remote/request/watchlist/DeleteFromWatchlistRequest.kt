@@ -1,7 +1,7 @@
 package com.example.retrolog.data.remote.request.watchlist
 
-data class DeleteFromFavoriteRequest (
+data class DeleteFromWatchlistRequest (
     val media_type: String,
     val media_id: Int,
-    val favorite: Boolean= false,
+    val watchlist: Boolean= false,
 )
