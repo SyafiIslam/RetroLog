@@ -22,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
@@ -40,7 +41,6 @@ import com.example.retrolog.data.remote.response.list.FilmData
 import com.example.retrolog.feature.collection.component.CollectionItemCard
 import com.example.retrolog.feature.collection.component.CollectionTopBar
 import com.example.retrolog.feature.component.LoadingDialog
-import com.example.retrolog.feature.detail.FilmDetailViewModel
 import com.example.retrolog.ui.theme.Neutral50
 import com.example.retrolog.ui.theme.Neutral900
 import com.example.retrolog.ui.theme.Primary300
@@ -73,9 +73,13 @@ fun CollectionScreen(
         mutableIntStateOf(0)
     }
 
+    var isReload by remember {
+        mutableStateOf(false)
+    }
+
     val pagerState = rememberPagerState{ tabTitle.size}
 
-    LaunchedEffect(key1 = true, key2 = tabIndex, key3 = viewModel.filmList.value) {
+    LaunchedEffect(key1 = true, key2 = tabIndex, key3 = isReload) {
         if (type == Constant.FAVORITE) {
             when (tabIndex) {
                 0 -> getFavoriteFilm(viewModel, this, context, Constant.MOVIE + "s")
@@ -131,8 +135,8 @@ fun CollectionScreen(
                         Text(
                             text = tab,
                             fontWeight =
-                            if (index == tabIndex) FontWeight.Bold
-                            else FontWeight.Normal,
+                                if (index == tabIndex) FontWeight.Bold
+                                else FontWeight.Normal,
                         )
                     },
                     selectedContentColor = Primary300,
@@ -153,10 +157,10 @@ fun CollectionScreen(
                             .fillMaxWidth()
                             .padding(vertical = 8.dp),
                         title =
-                        if (tabIndex == 1)
-                            it.original_name ?: ""
-                        else
-                            it.original_title ?: "",
+                            if (tabIndex == 1)
+                                it.original_name ?: ""
+                            else
+                                it.original_title ?: "",
                         posterPath = it.poster_path ?: "",
                         releaseData = if (tabIndex == 1)
                             it.first_air_date ?: ""
@@ -177,7 +181,8 @@ fun CollectionScreen(
                                     0 -> deleteFromFavorite(
                                         viewModel,
                                         scope,
-                                        context, it.id,
+                                        context,
+                                        it.id,
                                         Constant.MOVIE
                                     )
                                     1 -> deleteFromFavorite(
@@ -225,6 +230,7 @@ fun getFavoriteFilm(
 ) {
     coroutineScope.launch {
         viewModel.getFavoriteFilm(type).collect {
+            Log.i("@@@", "getFavoriteFilm: $type")
             when (it) {
                 is Resource.Error -> {
                     viewModel.setLoadingState(false)
@@ -257,7 +263,7 @@ fun getWatchlist(
                 is Resource.Loading -> viewModel.setLoadingState(true)
                 is Resource.Success -> {
                     viewModel.setLoadingState(false)
-                    Log.i("@@@", "getWatchlist $type: ${it.data}")
+                    Log.i("@@@", "getWatchlist $type: ${it.data?.results?.size}")
                     viewModel.setFilmList(it.data?.results as List<FilmData>)
                 }
             }
@@ -291,7 +297,11 @@ private fun deleteFromFavorite(
                 is Resource.Success -> {
                     viewModel.setLoadingState(false)
                     if (it.data?.success as Boolean) {
-                        getFavoriteFilm(viewModel, this, context, type)
+                        if (type == Constant.MOVIE) {
+                            getFavoriteFilm(viewModel, this, context, type + "s")
+                        } else {
+                            getFavoriteFilm(viewModel, this, context, type)
+                        }
                         showToast("Deleted from favorite", context)
                     } else {
                         val errorMessage= it.data.status_message
@@ -321,14 +331,18 @@ private fun deleteFromWatchlist(
             when (it) {
                 is Resource.Error -> {
                     viewModel.setLoadingState(false)
-                    showToast(it.toString(), context)
+                    showToast(it.toString(), context)Ser
                 }
 
                 is Resource.Loading -> viewModel.setLoadingState(true)
                 is Resource.Success -> {
                     viewModel.setLoadingState(false)
                     if (it.data?.success as Boolean) {
-                        getWatchlist(viewModel, this, context, type)
+                        if (type == Constant.MOVIE) {
+                            getWatchlist(viewModel, this, context, type + "s")
+                        } else {
+                            getWatchlist(viewModel, this, context, type)
+                        }
                         showToast("Deleted from watchlist", context)
                     } else {
                         val errorMessage= it.data.status_message

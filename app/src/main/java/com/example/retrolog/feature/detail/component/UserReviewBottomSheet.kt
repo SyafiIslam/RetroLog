@@ -27,8 +27,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.retrolog.R
 import com.example.retrolog.data.remote.response.review.Review
@@ -45,7 +47,7 @@ fun UserReviewBottomSheet(
     userReview: List<Review>,
 ) {
 
-    val sheetState= rememberModalBottomSheetState()
+    val sheetState = rememberModalBottomSheetState()
     val totalStars = 5
 
     ModalBottomSheet(
@@ -63,78 +65,95 @@ fun UserReviewBottomSheet(
         }
     ) {
         LazyColumn(
-            Modifier.fillMaxWidth().fillMaxHeight(.8f).padding(horizontal = 20.dp),
-
+            Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(.8f)
+                .padding(horizontal = 20.dp),
         ) {
-            items(userReview) {
-
-                val fullStars = it.author_details.rating / 2
-
-
-                Column(
-                    Modifier.padding(bottom = 20.dp),
-                    verticalArrangement = Arrangement.spacedBy(20.dp)
-                ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+            if (userReview.isEmpty()) {
+                item {
+                    Column(
+                        Modifier.fillMaxWidth(),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        if (it.author_details.avatar_path != null) {
-                            AsyncImage(
-                                model = Constant.BASE_URL_IMAGE + it.author_details.avatar_path,
-                                modifier = Modifier
-                                    .size(50.dp)
-                                    .clip(CircleShape),
-                                contentScale = ContentScale.Crop,
-                                contentDescription = "Avatar"
-                            )
-                        } else {
-                            Box(
-                                Modifier
-                                    .size(50.dp)
-                                    .clip(CircleShape)
-                                    .background(Primary700),
-                            )
-                        }
+                        Text(
+                            "No reviews yet",
+                            color = Neutral50,
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                }
+            } else {
+                items(userReview) {
 
-                        Column(
-                            verticalArrangement = Arrangement.Center
+                    val fullStars = it.author_details.rating.toInt() / 2
+
+                    Column(
+                        Modifier.padding(bottom = 20.dp),
+                        verticalArrangement = Arrangement.spacedBy(20.dp)
+                    ) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
-                            Text(
-                                it.author,
-                                color = Neutral50
-                            )
-                            if (it.author_details.rating > 0) {
-                                Row(
-                                ) {
-                                    repeat(fullStars) {
-                                        Icon(
-                                            painter = painterResource(R.drawable.ic_star),
-                                            contentDescription = "Full Star",
-                                            tint = RatingColor,
-                                            modifier = Modifier.size(18.dp)
-                                        )
-                                    }
+                            if (it.author_details.avatar_path != null) {
+                                AsyncImage(
+                                    model = Constant.BASE_URL_IMAGE + it.author_details.avatar_path,
+                                    modifier = Modifier
+                                        .size(50.dp)
+                                        .clip(CircleShape),
+                                    contentScale = ContentScale.Crop,
+                                    contentDescription = "Avatar"
+                                )
+                            } else {
+                                Box(
+                                    Modifier
+                                        .size(50.dp)
+                                        .clip(CircleShape)
+                                        .background(Primary700),
+                                )
+                            }
 
-                                    val emptyStars = totalStars - fullStars
-                                    repeat(emptyStars) {
-                                        Icon(
-                                            painter = painterResource(R.drawable.ic_star),
-                                            contentDescription = "Empty Star",
-                                            tint = Neutral50,
-                                            modifier = Modifier.size(18.dp)
-                                        )
+                            Column(
+                                verticalArrangement = Arrangement.Center
+                            ) {
+                                Text(
+                                    it.author,
+                                    color = Neutral50
+                                )
+                                if (it.author_details.rating > 0) {
+                                    Row(
+                                    ) {
+                                        repeat(fullStars) {
+                                            Icon(
+                                                painter = painterResource(R.drawable.ic_star),
+                                                contentDescription = "Full Star",
+                                                tint = RatingColor,
+                                                modifier = Modifier.size(18.dp)
+                                            )
+                                        }
+
+                                        val emptyStars = totalStars - fullStars
+                                        repeat(emptyStars) {
+                                            Icon(
+                                                painter = painterResource(R.drawable.ic_star),
+                                                contentDescription = "Empty Star",
+                                                tint = Neutral50,
+                                                modifier = Modifier.size(18.dp)
+                                            )
+                                        }
                                     }
                                 }
                             }
                         }
+                        Text(
+                            it.content,
+                            color = Neutral50,
+                            textAlign = TextAlign.Justify
+                        )
                     }
-
-                    Text(
-                        it.content,
-                        color = Neutral50,
-                        textAlign = TextAlign.Justify
-                    )
                 }
             }
         }
